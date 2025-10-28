@@ -29,19 +29,26 @@ export class TeamsService {
       return { message: 'The league does not exist' };
     }
 
-    const category = await this.categoryRepository.findOneBy({
-      idCategory: createTeamDto.category,
-    });
+    const teamPayload: Partial<Team> = {
+      nameTeam: createTeamDto.nameTeam,
+      logoTeam: createTeamDto.logoTeam,
+      league: league,
+    };
 
-    if (!category) {
-      return { message: 'The category does not exist' };
+    if (createTeamDto.category) {
+      const category = await this.categoryRepository.findOneBy({
+        idCategory: createTeamDto.category,
+      });
+
+      if (!category) {
+        throw new BadRequestException('The provided category does not exist');
+      }
+
+      teamPayload.category = category;
     }
 
-    return await this.teamRepository.save({
-      ...createTeamDto,
-      league: league,
-      category: category,
-    });
+    const newTeam = this.teamRepository.create(teamPayload);
+    return await this.teamRepository.save(newTeam);
   }
 
   async findAll() {
@@ -53,38 +60,39 @@ export class TeamsService {
   }
 
   async update(id: number, updateTeamDto: UpdateTeamDto) {
-    const team = await this.teamRepository.findOneBy({ idTeam: id });
-    if (!team) {
+    const teamToUpdate = await this.teamRepository.findOneBy({ idTeam: id });
+    if (!teamToUpdate) {
       throw new BadRequestException('Team not found');
     }
 
-    let league: League | null = null;
     if (updateTeamDto.league) {
-      league = await this.leagueRepository.findOneBy({
+      const league = await this.leagueRepository.findOneBy({
         idLeague: updateTeamDto.league,
       });
+      if (!league) {
+        throw new BadRequestException('League not found');
+      }
+      teamToUpdate.league = league;
     }
 
-    if (!league && updateTeamDto.league) {
-      throw new BadRequestException('League not found');
+    if (updateTeamDto.hasOwnProperty('category')) {
+      if (updateTeamDto.category === null) {
+        teamToUpdate.category = null;
+      } else {
+        const category = await this.categoryRepository.findOneBy({
+          idCategory: updateTeamDto.category,
+        });
+        if (!category) {
+          throw new BadRequestException('Category not found');
+        }
+        teamToUpdate.category = category;
+      }
     }
-    let category: Category | null = null;
-    if (updateTeamDto.category) {
-      category = await this.categoryRepository.findOneBy({
-        idCategory: updateTeamDto.category,
-      });
-    }
+    if (updateTeamDto.nameTeam) teamToUpdate.nameTeam = updateTeamDto.nameTeam;
+    if (updateTeamDto.logoTeam) teamToUpdate.logoTeam = updateTeamDto.logoTeam;
 
-    if (!category && updateTeamDto.category) {
-      throw new BadRequestException('Category not found');
-    }
-
-    return await this.teamRepository.save({
-      ...team,
-      ...updateTeamDto,
-      league: league ?? team.league,
-      category: category ?? team.category,
-    });
+    // 5. Guardamos la entidad 'teamToUpdate' ya modificada.
+    return this.teamRepository.save(teamToUpdate);
   }
 
   async remove(id: number) {

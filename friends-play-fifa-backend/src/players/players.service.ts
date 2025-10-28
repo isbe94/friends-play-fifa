@@ -1,10 +1,12 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { CreatePlayerDto } from './dto/create-player.dto';
 import { UpdatePlayerDto } from './dto/update-player.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Player } from './entities/player.entity';
 import { Repository } from 'typeorm';
 import { Team } from 'src/teams/entities/team.entity';
+import * as bcrypt from 'bcrypt';
+import { LoginPlayerDto } from './dto/login-player.dto';
 
 @Injectable()
 export class PlayersService {
@@ -23,11 +25,46 @@ export class PlayersService {
     if (!team) {
       return { message: 'The team does not exist' };
     }
+
+    const existingPlayer = await this.playerRepository.findOneBy({
+      namePlayer: createPlayerDto.namePlayer,
+    });
+    if (existingPlayer) {
+      throw new Error('There is already a player with that name.');
+    }
+
+    // Hashear la contraseña
+    const hashedPassword = await bcrypt.hash(createPlayerDto.password, 10);
+
     //const newPlayer = this.playerRepository.create(createPlayerDto); // Crea una instancia de Player para pasar al save()
     return await this.playerRepository.save({
       ...createPlayerDto,
+      password: hashedPassword,
       favoriteTeam: team,
     });
+  }
+
+  async login(loginDto: LoginPlayerDto) {
+    const player = await this.playerRepository.findOne({
+      where: { namePlayer: loginDto.namePlayer },
+      relations: ['favoriteTeam'],
+    });
+
+    if (!player) {
+      throw new UnauthorizedException('Credenciales incorrectas');
+    }
+
+    const isPasswordValid = await bcrypt.compare(
+      loginDto.password,
+      player.password,
+    );
+
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('Credenciales incorrectas');
+    }
+
+    const { password, ...result } = player;
+    return result;
   }
 
   async findAll() {

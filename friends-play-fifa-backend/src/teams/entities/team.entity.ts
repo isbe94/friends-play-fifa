@@ -34,7 +34,7 @@ export class Team {
     eager: true,
     nullable: true, // Permite que sea opcional
   })
-  category: Category;
+  category: Category | null;
 
   @OneToMany(() => MatchPlayer, (matchesPlayers) => matchesPlayers.team)
   matchesPlayers: MatchPlayer[];

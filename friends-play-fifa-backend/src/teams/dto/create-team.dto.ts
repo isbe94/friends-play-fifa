@@ -1,4 +1,4 @@
-import { IsInt, IsNotEmpty, IsPositive, IsString } from 'class-validator';
+import { IsInt, IsNotEmpty, IsPositive, IsString, IsOptional } from 'class-validator';
 
 export class CreateTeamDto {
   @IsNotEmpty({ message: 'El nombre es obligatorio' })
@@ -14,6 +14,7 @@ export class CreateTeamDto {
   @IsPositive()
   league: number;
 
+  @IsOptional()
   @IsInt()
   @IsPositive()
   category: number;

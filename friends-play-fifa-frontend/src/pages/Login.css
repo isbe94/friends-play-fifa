@@ -1,0 +1,109 @@
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #e8fdf5;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.login-card {
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 100%;
+  max-width: 400px;
+}
+
+.login-card h1 {
+  color: #0d6e4b;
+  margin: 0 0 10px 0;
+  font-size: 28px;
+}
+
+.login-card p {
+  color: #777;
+  margin: 0 0 30px 0;
+  font-size: 16px;
+}
+
+.login-input {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #d0f0e0;
+  border-radius: 8px;
+  font-size: 16px;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+}
+
+.login-input:focus {
+  outline: none;
+  border-color: #0d6e4b;
+}
+
+.login-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #0d6e4b;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.login-button:hover {
+  background-color: #0a5a3d;
+}
+
+.login-input {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+/* Pestañas */
+.tabs {
+  display: flex;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #ddd;
+}
+
+.tab, .tab-active {
+  flex: 1;
+  padding: 12px;
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  outline: none;
+}
+
+.tab {
+  color: #666;
+  border-bottom: 2px solid transparent;
+}
+
+.tab-active {
+  color: #1a73e8;
+  border-bottom: 2px solid #1a73e8;
+  font-weight: bold;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  padding: 30px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  text-align: center;
+}

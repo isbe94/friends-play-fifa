@@ -1,0 +1,116 @@
+.sidebar {
+  width: 260px;
+  background: linear-gradient(180deg, var(--dark-900) 0%, var(--dark-800) 100%);
+  color: #a0aec0;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  padding: 1.5rem 1rem;
+}
+
+.sidebar-header {
+  text-align: center;
+  padding: 0 1rem;
+  margin-bottom: 2rem;
+}
+
+.sidebar-logo {
+  font-weight: 800;
+  color: white;
+  margin: 0;
+  display: flex;
+  align-items: center; /* Centra verticalmente */
+  justify-content: center; /* Centra horizontalmente */
+  gap: 0.65rem; /* Espacio entre el icono y el texto */
+}
+
+.sidebar-logo .logo-image {
+  width: 30px; 
+  height: 30px;
+  flex-shrink: 0;
+}
+
+.sidebar-logo span {
+  font-size: 1.20rem; 
+}
+
+.sidebar-profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 2.5rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+}
+
+.profile-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 3px solid var(--primary-500);
+  object-fit: cover;
+}
+
+.profile-name {
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.nav-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-menu.bottom-menu {
+  margin-top: auto; /* Empuja este menú hacia abajo */
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.85rem 1rem;
+  margin-bottom: 0.5rem;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #a0aec0;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+  font-size: 1rem;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+}
+
+.nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.nav-link.active {
+  background-color: var(--primary-500);
+  color: white;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.nav-link svg {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+/* .logout-button {
+  color: #e53e3e;
+} */
+
+.logout-button:hover {
+  background-color: rgba(229, 62, 62, 0.1);
+  color: #c53030;
+}

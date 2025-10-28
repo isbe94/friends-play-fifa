@@ -1,6 +1,9 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 import { PlayersModule } from './players/players.module';
-import { TypeOrmModule } from "@nestjs/typeorm";
 import { TeamsModule } from './teams/teams.module';
 import { LeaguesModule } from './leagues/leagues.module';
 import { CategoriesModule } from './categories/categories.module';
@@ -11,16 +14,29 @@ import { TournamentsCategoriesModule } from './tournaments-categories/tournament
 
 @Module({
   imports: [
-    PlayersModule,
-    TypeOrmModule.forRoot({
-      type: "mysql",
-      host: "localhost",
-      port: 3307,
-      username: "isbelita",
-      password: "123456",
-      database: "friends_play_fifa",
-      autoLoadEntities: true, // Carga automáticamente entidades
-      synchronize: true,
+    // Variables de entorno estén disponibles en toda la aplicación.
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'uploads'), // ruta física en el servidor
+      serveRoot: '/uploads', // prefijo URL público
+    }),
+
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        type: 'mysql',
+        host: configService.get<string>('DATABASE_HOST'),
+        port: configService.get<number>('DATABASE_PORT'),
+        username: configService.get<string>('DATABASE_USER'),
+        password: configService.get<string>('DATABASE_PASSWORD'),
+        database: configService.get<string>('DATABASE_NAME'),
+        autoLoadEntities: true,
+        synchronize: true,
+      }),
     }),
     PlayersModule,
     TeamsModule,
@@ -31,7 +47,5 @@ import { TournamentsCategoriesModule } from './tournaments-categories/tournament
     TournamentsModule,
     TournamentsCategoriesModule,
   ],
-  controllers: [],
-  providers: [],
 })
 export class AppModule {}

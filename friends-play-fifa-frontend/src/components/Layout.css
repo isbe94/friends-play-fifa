@@ -1,0 +1,29 @@
+.app-layout {
+  display: flex;
+  height: 100vh;
+  width: 100%; /* Usa 100% en lugar de 100vw */
+  position: relative;
+  overflow: hidden;
+}
+
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  /* El width se calculará automáticamente por flexbox, no necesitamos definirlo */
+  overflow: hidden; /* Previene que el wrapper tenga scroll */
+}
+
+.main-content {
+  flex-grow: 1; /* Crece para ocupar el espacio vertical disponible */
+  overflow-y: auto; /* El scroll SOLO aparece aquí */
+  padding: 2.5rem; /* Espaciado interno consistente */
+  background-color: var(--background);
+}
+
+/* Breakpoint para responsividad */
+@media (max-width: 1024px) {
+  .main-content {
+    padding: 1.5rem; /* Menos padding en pantallas pequeñas */
+  }
+}
